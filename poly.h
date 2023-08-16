@@ -22,6 +22,8 @@ int poly_degree(Poly *a);
 void poly_mod_center(Poly *aa, int q, Poly *result);
 
 void poly_gen_tern(int n, int d1, int d0, Poly *result);
+void poly_gen(int n, Poly *result);
+void poly_gen_small(int n, Poly *result);
 
 void poly_sum(Poly *a, Poly *b, int modulus, Poly *result);
 void poly_sub(Poly *a, Poly *b, int modulus, Poly *result);

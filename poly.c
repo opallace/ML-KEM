@@ -6,6 +6,8 @@
 
 #include "aux.h"
 #include "poly.h"
+#include "polyvec.h"
+#include "kyber.h"
 
 Poly* poly_init(){
 	Poly* result = malloc(sizeof(Poly));
@@ -167,6 +169,32 @@ void poly_gen_tern(int n, int d1, int d0, Poly *result){
 	}
 
 	poly_rem_null_terms(result);
+}
+
+void poly_gen(int n, Poly *result){
+	srand(time(NULL));
+
+	result->coeff = calloc(n + 1, sizeof(int));
+	result->size = n + 1;
+
+	for (int i = 0; i < n; i++){
+		result->coeff[i] = rand() % Q;
+	}
+
+	result->coeff[n] = (rand() % (Q-1)) + 1;
+}
+
+void poly_gen_small(int n, Poly *result){
+	srand(time(NULL));
+
+	result->coeff = calloc(n + 1, sizeof(int));
+	result->size = n + 1;
+
+	for (int i = 0; i < n; i++){
+		result->coeff[i] = (rand() % 3) - 1;
+	}
+
+	result->coeff[n] = 1;
 }
 
 void poly_sum(Poly *aa, Poly *bb, int modulus, Poly *result){

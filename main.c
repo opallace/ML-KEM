@@ -3,17 +3,20 @@
 
 #include "poly.h"
 #include "polyvec.h"
+#include "kyber.h"
 
 int main(){
 
-	Polyvec *pv = polyvec_init(2, 2);
+	Kyber *kyber =  kyber_init();
+	Poly *msg = poly_init();
+	Poly *dec = poly_init();
 
-	poly_gen_tern(256, 5, 5, pv->poly[0][0]);
-	poly_gen_tern(256, 5, 5, pv->poly[0][1]);
-	poly_gen_tern(256, 5, 5, pv->poly[1][0]);
-	poly_gen_tern(256, 5, 5, pv->poly[1][1]);
+	kyber_keygen(kyber);
+	poly_gen(N, msg);
+	
 
-	polyvec_print(pv);
+	kyber_encrypt(kyber, msg);
+	kyber_decrypt(kyber, dec);
 
 	return 0;
 }
