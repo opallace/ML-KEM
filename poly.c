@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
+#include <unistd.h>
 
 #include "aux.h"
 #include "poly.h"
@@ -18,7 +19,11 @@ Poly* poly_init(){
 void poly_print(Poly *a){
 	for (int i = 0; i < a->size; ++i){
 		if(a->coeff[i] != 0){
-			printf("%ix^%i ", a->coeff[i], i);
+			if(a->coeff[i] > 0){
+				printf("+%ix^%i ", a->coeff[i], i);
+			}else {
+				printf("%ix^%i ", a->coeff[i], i);
+			}
 		}
 	}
 }
@@ -26,7 +31,11 @@ void poly_print(Poly *a){
 void poly_println(Poly *a){
 	for (int i = 0; i < a->size; ++i){
 		if(a->coeff[i] != 0){
-			printf("%ix^%i ", a->coeff[i], i);
+			if(a->coeff[i] > 0){
+				printf("+%ix^%i ", a->coeff[i], i);
+			}else {
+				printf("%ix^%i ", a->coeff[i], i);
+			}
 		}
 	}
 
@@ -145,6 +154,7 @@ void poly_mod_center(Poly *aa, int q, Poly *result){
 }
 
 void poly_gen_tern(int n, int d1, int d0, Poly *result){
+	sleep(1);
 	srand(time(NULL));
 
 	result->coeff = calloc(n + 1, sizeof(int));
@@ -172,29 +182,47 @@ void poly_gen_tern(int n, int d1, int d0, Poly *result){
 }
 
 void poly_gen(int n, Poly *result){
+	sleep(1);
 	srand(time(NULL));
 
-	result->coeff = calloc(n + 1, sizeof(int));
-	result->size = n + 1;
+	result->coeff = calloc(n, sizeof(int));
+	result->size = n;
 
-	for (int i = 0; i < n; i++){
+	for (int i = 0; i < n-1; i++){
 		result->coeff[i] = rand() % Q;
 	}
 
-	result->coeff[n] = (rand() % (Q-1)) + 1;
+	result->coeff[n-1] = (rand() % (Q-1)) + 1;
 }
 
 void poly_gen_small(int n, Poly *result){
+	sleep(1);
 	srand(time(NULL));
 
-	result->coeff = calloc(n + 1, sizeof(int));
-	result->size = n + 1;
+	result->coeff = calloc(n, sizeof(int));
+	result->size = n;
 
-	for (int i = 0; i < n; i++){
+	for (int i = 0; i < n-1; i++){
 		result->coeff[i] = (rand() % 3) - 1;
 	}
 
-	result->coeff[n] = 1;
+	result->coeff[n-1] = 1;
+}
+
+void poly_compress(Poly *a, Poly *result){
+	double compress_float = 2.0 / Q;
+
+	for (size_t i = 0; i < a->size; i++){
+		result->coeff[i] = (int)ceil(compress_float * a->coeff[i]) % 2;
+	}
+}
+
+void poly_decompress(Poly *a, Poly *result){
+	double decompress_float = Q / 2.0;
+
+	for (size_t i = 0; i < a->size; i++){
+		result->coeff[i] = (int)ceil(decompress_float * a->coeff[i]);
+	}
 }
 
 void poly_sum(Poly *aa, Poly *bb, int modulus, Poly *result){

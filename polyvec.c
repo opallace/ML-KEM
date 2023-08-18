@@ -66,8 +66,6 @@ void polyvec_mul(Polyvec *a, Polyvec *b, Polyvec *result){
 	Poly *ring = poly_init();
 	kyber_gen_ring(N, ring);
 
-	poly_print(ring);
-
 	for (int u = 0; u < a->size_i; u++){
         for (int v = 0; v < b->size_j; v++){
 
@@ -84,7 +82,6 @@ void polyvec_mul(Polyvec *a, Polyvec *b, Polyvec *result){
 			
 			poly_copy(result->poly[u][v], somatorio);
 			poly_free(somatorio);
-
         }
     }
 }
