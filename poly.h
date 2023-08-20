@@ -23,7 +23,7 @@ void poly_mod_center(Poly *aa, int q, Poly *result);
 
 void poly_gen_tern(int n, int d1, int d0, Poly *result);
 void poly_gen(int n, Poly *result);
-void poly_gen_small(int n, Poly *result);
+void poly_cbd(Poly *a, int eta, Poly *result);
 void poly_compress(Poly *a, Poly *result);
 void poly_decompress(Poly *a, Poly *result);
 

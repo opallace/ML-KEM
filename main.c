@@ -7,6 +7,29 @@
 #include "polyvec.h"
 #include "kyber.h"
 
+void teste_igual(Poly *a, Poly *b){
+	printf("size a: %i\n", a->size);
+	printf("size b: %i\n", b->size);
+
+	printf("[");
+	for (int i = 0; i < a->size; ++i){
+		if(i == a->size - 1){
+			if(a->coeff[i] == b->coeff[i]){
+				printf("S");
+			}else {
+				printf("N");
+			}
+		}else {
+			if(a->coeff[i] == b->coeff[i]){
+				printf("S ");
+			}else {
+				printf("N ");
+			}
+		}
+	}
+	printf("]\n");
+}
+
 void poly_gen_msg(int n, Poly *result){
 	sleep(1);
 	srand(time(NULL));
@@ -24,24 +47,29 @@ void poly_gen_msg(int n, Poly *result){
 int main(){
 	Kyber *kyber =  kyber_init();
 	Poly *msg = poly_init();
+	Poly *msgA = poly_init();
 	Poly *dec = poly_init();
 
-	// poly_gen_msg(N, msg);
-	// poly_println(msg);
-	msg->coeff = malloc(4 * sizeof(int));
-	msg->size = 4;
+	poly_gen_msg(N, msg);
+	poly_copy(msgA, msg);
 
-	msg->coeff[0] = 1;
-	msg->coeff[1] = 1;
-	msg->coeff[2] = 0;
-	msg->coeff[3] = 1;
-	
+	printf("MSG: ");
 	poly_println(msg);
 
 	kyber_keygen(kyber);
+
+	// printf("A: ");
+	// polyvec_print(kyber->a);
+	// printf("S: ");
+	// polyvec_print(kyber->s);
+	// printf("E: ");
+	// polyvec_print(kyber->e);
+	// printf("T: ");
+	// polyvec_print(kyber->t);
+
 	kyber_encrypt(kyber, msg);
 	kyber_decrypt(kyber, dec);
-	poly_println(dec);
+	teste_igual(msgA, dec);
 
 	return 0;
 }

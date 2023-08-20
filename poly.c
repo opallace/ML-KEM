@@ -17,29 +17,27 @@ Poly* poly_init(){
 }
 
 void poly_print(Poly *a){
+	printf("[");
 	for (int i = 0; i < a->size; ++i){
-		if(a->coeff[i] != 0){
-			if(a->coeff[i] > 0){
-				printf("+%ix^%i ", a->coeff[i], i);
-			}else {
-				printf("%ix^%i ", a->coeff[i], i);
-			}
+		if(i == a->size - 1){
+			printf("%i", a->coeff[i]);
+		}else {
+			printf("%i ", a->coeff[i]);
 		}
 	}
+	printf("]");
 }
 
 void poly_println(Poly *a){
+	printf("[");
 	for (int i = 0; i < a->size; ++i){
-		if(a->coeff[i] != 0){
-			if(a->coeff[i] > 0){
-				printf("+%ix^%i ", a->coeff[i], i);
-			}else {
-				printf("%ix^%i ", a->coeff[i], i);
-			}
+		if(i == a->size - 1){
+			printf("%i", a->coeff[i]);
+		}else {
+			printf("%i,", a->coeff[i]);
 		}
 	}
-
-	printf("\n\n");
+	printf("]\n");
 }
 
 void poly_copy(Poly *a, Poly *b){
@@ -195,18 +193,28 @@ void poly_gen(int n, Poly *result){
 	result->coeff[n-1] = (rand() % (Q-1)) + 1;
 }
 
-void poly_gen_small(int n, Poly *result){
-	sleep(1);
-	srand(time(NULL));
+void poly_cbd(Poly *a, int eta, Poly *result){
+	Poly *input_bytes = poly_init();
+	poly_copy(input_bytes, a);
 
-	result->coeff = calloc(n, sizeof(int));
-	result->size = n;
+	int *bits = bytes_to_bits(input_bytes->coeff, input_bytes->size);
+	result->coeff = malloc(N * sizeof(int));
+	result->size  = N;
 
-	for (int i = 0; i < n-1; i++){
-		result->coeff[i] = (rand() % 3) - 1;
+	for (int i = 0; i < N; i++){
+		int sum_a = 0;
+		int sum_b = 0;
+
+		for (int j = 0; j < eta; j++){
+			sum_a += bits[(2 * i * eta) + j];
+		}
+
+		for (int j = 0; j < eta; j++){
+			sum_b += bits[(2 * i * eta) + eta + j];
+		}
+
+		result->coeff[i] = sum_a - sum_b;
 	}
-
-	result->coeff[n-1] = 1;
 }
 
 void poly_compress(Poly *a, Poly *result){
