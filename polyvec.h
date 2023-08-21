@@ -1,10 +1,6 @@
 #ifndef POLYVEC_H_INCLUDED
 #define POLYVEC_H_INCLUDED
 
-/* Como a ordem das matrizes de polinômios
- * são sempre iguais a k ou kxk
- * desta forma [i][j] = i*k + j
- */
 typedef struct{
 	Poly ***poly;
 

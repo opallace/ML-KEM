@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <time.h>
 
 #include "poly.h"
 #include "polyvec.h"
@@ -35,6 +36,8 @@ void kyber_gen_ring(int p, Poly *result){
 }
 
 void kyber_keygen(Kyber *kyber){
+	srand(time(NULL));
+
 	for (int i = 0; i < kyber->a->size_i; i++){
 		for (int j = 0; j < kyber->a->size_j; j++){
 			poly_gen(N, kyber->a->poly[i][j]);
@@ -60,6 +63,8 @@ void kyber_keygen(Kyber *kyber){
 }
 
 void kyber_encrypt(Kyber *kyber, Poly *msg){
+	srand(time(NULL));
+
 	Polyvec *At  = polyvec_init(K, K);
 	Polyvec *tt  = polyvec_init(1, K);
 	Polyvec *mul = polyvec_init(1, 1);
@@ -103,8 +108,5 @@ void kyber_decrypt(Kyber *kyber, Poly *msg){
 	poly_copy(msg, mul->poly[0][0]);
 
 	poly_sub(kyber->v, msg, Q, msg);
-	poly_println(msg);
-	// poly_compress(msg, msg);
+	poly_compress(msg, msg);
 }
-
-
