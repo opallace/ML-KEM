@@ -175,12 +175,12 @@ void poly_mul(Poly *aa, Poly *bb, Poly *result){
 	temp_result->size  = N;
 	temp_result->coeff = calloc(N, sizeof(int));
 
-	for (int i = 0; i < result->size; i++){
-		for (int j = 0; j < result->size; j++){
+	for (int i = 0; i < temp_result->size; i++){
+		for (int j = 0; j < temp_result->size; j++){
 			if(i-j >= 0){
-				temp_result->coeff[i] = mod(result->coeff[i] + (a->coeff[i-j] * b->coeff[j]), Q);
+				temp_result->coeff[i] = mod(temp_result->coeff[i] + (a->coeff[i-j] * b->coeff[j]), Q);
 			}else {
-				temp_result->coeff[i] = mod(result->coeff[i] - (a->coeff[N+i-j] * b->coeff[j]), Q);
+				temp_result->coeff[i] = mod(temp_result->coeff[i] + (-a->coeff[N+i-j] * b->coeff[j]), Q);
 			}
 		}
 	}
