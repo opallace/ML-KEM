@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 
 #include "aux.h"
 #include "poly.h"
@@ -10,6 +9,7 @@
 
 void poly_gen_msg(int n, Poly *result){
 	srand(time(NULL));
+	
 	result->coeff = calloc(n, sizeof(int));
 	result->size  = n;
 
@@ -18,6 +18,31 @@ void poly_gen_msg(int n, Poly *result){
 	}
 
 	result->coeff[n-1] = 1;
+}
+
+int poly_cmp(Poly *a, Poly *b){
+	if(a->size == b->size){
+
+		if(a->coeff[a->size - 1] == b->coeff[b->size - 1]){
+			return 0;
+
+		}else {
+			if(a->coeff[a->size - 1] > b->coeff[b->size - 1]){
+				return 1;
+
+			}else {
+				return -1;
+
+			}
+		}
+
+	}else {
+		if(a->size > b->size){
+			return 1;
+		}else {
+			return -1;
+		}
+	}
 }
 
 int main(){
@@ -59,6 +84,8 @@ int main(){
 
 	printf("MSG: ");
 	poly_println(dec);
+
+	// printf("%i\n", poly_cmp(msg, dec));
 
 	return 0;
 }

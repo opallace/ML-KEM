@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include <math.h>
-#include <unistd.h>
 
 #include "aux.h"
 #include "poly.h"
@@ -54,14 +52,7 @@ void poly_free(Poly *a){
 	free(a);
 }
 
-void poly_trunc(Poly *a){
-	for (int i = 0; i < a->size; ++i){
-		a->coeff[i] = mod(a->coeff[i], Q);
-	}
-}
-
 void poly_fill(Poly *a, int new_size, int value){
-
 	a->coeff = realloc(a->coeff, new_size * sizeof(int));
 	
 	for (int i = a->size; i < new_size; i++){
@@ -73,7 +64,7 @@ void poly_fill(Poly *a, int new_size, int value){
 
 void poly_gen(int n, Poly *result){
 	result->coeff = calloc(n, sizeof(int));
-	result->size = n;
+	result->size  = n;
 
 	for (int i = 0; i < n-1; i++){
 		result->coeff[i] = rand() % Q;
@@ -118,10 +109,8 @@ void poly_compress(Poly *a, Poly *result){
 }
 
 void poly_decompress(Poly *a, Poly *result){
-	double decompress_float = Q / 2.0;
-
 	for (size_t i = 0; i < a->size; i++){
-		result->coeff[i] = (int)ceil(decompress_float * a->coeff[i]);
+		result->coeff[i] = (int)ceil((Q / 2.0) * a->coeff[i]);
 	}
 }
 
@@ -133,9 +122,6 @@ void poly_sum(Poly *aa, Poly *bb, Poly *result){
 	poly_copy(a, aa);
 	poly_copy(b, bb);
 
-	poly_trunc(a);
-	poly_trunc(b);
-
 	temp_result->size  = N;
 	temp_result->coeff = calloc(N, sizeof(int));
 
@@ -143,10 +129,9 @@ void poly_sum(Poly *aa, Poly *bb, Poly *result){
 	poly_fill(b, N, 0);
 
 	for (int i = 0; i < temp_result->size; i++){
-		temp_result->coeff[i] = a->coeff[i] + b->coeff[i];
+		temp_result->coeff[i] = mod(a->coeff[i] + b->coeff[i], Q);
 	}
 
-	poly_trunc(temp_result);
 	poly_copy(result, temp_result);
 
 	poly_free(temp_result);
@@ -155,52 +140,54 @@ void poly_sum(Poly *aa, Poly *bb, Poly *result){
 }
 
 void poly_sub(Poly *aa, Poly *bb, Poly *result){
+	Poly *temp_result = poly_init();
 	Poly *a = poly_init();
 	Poly *b = poly_init();
 
 	poly_copy(a, aa);
 	poly_copy(b, bb);
 
-	poly_trunc(a);
-	poly_trunc(b);
-
-	result->size  = max(a->size, b->size);
-	result->coeff = calloc(result->size, sizeof(int));
+	temp_result->size  = N;
+	temp_result->coeff = calloc(N, sizeof(int));
 
 	poly_fill(a, N, 0);
 	poly_fill(b, N, 0);
 
-	for (int i = 0; i < result->size; i++){
-		result->coeff[i] = a->coeff[i] - b->coeff[i];
+	for (int i = 0; i < temp_result->size; i++){
+		temp_result->coeff[i] = mod(a->coeff[i] - b->coeff[i], Q);
 	}
 
-	poly_trunc(result);
+	poly_copy(result, temp_result);
 
+	poly_free(temp_result);
 	poly_free(a);
 	poly_free(b);
 }
 
 void poly_mul(Poly *aa, Poly *bb, Poly *result){
-	Poly *a = poly_init();
-	Poly *b = poly_init();
+	Poly *temp_result = poly_init();
+	Poly *a           = poly_init();
+	Poly *b           = poly_init();
 
 	poly_copy(a, aa);
 	poly_copy(b, bb);
 
-	result->coeff = calloc(N, sizeof(int));
-	result->size  = N;
+	temp_result->size  = N;
+	temp_result->coeff = calloc(N, sizeof(int));
 
 	for (int i = 0; i < result->size; i++){
 		for (int j = 0; j < result->size; j++){
 			if(i-j >= 0){
-				result->coeff[i] += a->coeff[i-j] * b->coeff[j];
+				temp_result->coeff[i] = mod(result->coeff[i] + (a->coeff[i-j] * b->coeff[j]), Q);
 			}else {
-				result->coeff[i] += -a->coeff[N+i-j] * b->coeff[j];
+				temp_result->coeff[i] = mod(result->coeff[i] - (a->coeff[N+i-j] * b->coeff[j]), Q);
 			}
 		}
 	}
 	
-	poly_trunc(result);
+	poly_copy(result, temp_result);
+
+	poly_free(temp_result);
 	poly_free(a);
 	poly_free(b);
 }
