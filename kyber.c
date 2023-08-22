@@ -22,19 +22,6 @@ Kyber* kyber_init(){
 	return kyber;
 }
 
-void kyber_gen_ring(int p, Poly *result){
-	Poly *ring = poly_init();
-
-	ring->coeff = calloc((p + 1), sizeof(int));
-	ring->size = p + 1;
-
-	ring->coeff[0] = 1;
-	ring->coeff[p] = 1;
-
-	poly_copy(result, ring);
-	poly_free(ring);
-}
-
 void kyber_keygen(Kyber *kyber){
 	srand(time(NULL));
 
@@ -93,10 +80,10 @@ void kyber_encrypt(Kyber *kyber, Poly *msg){
 	polyvec_sum(kyber->u, kyber->e1, kyber->u);
 
 	polyvec_mul(tt, kyber->r, mul);
-	poly_sum(mul->poly[0][0], kyber->e2, Q, kyber->v);
+	poly_sum(mul->poly[0][0], kyber->e2, kyber->v);
 	poly_decompress(msg, msg);
 
-	poly_sum(kyber->v, msg, Q, kyber->v);
+	poly_sum(kyber->v, msg, kyber->v);
 }
 
 void kyber_decrypt(Kyber *kyber, Poly *msg){
@@ -107,6 +94,6 @@ void kyber_decrypt(Kyber *kyber, Poly *msg){
 	polyvec_mul(st, kyber->u, mul);
 	poly_copy(msg, mul->poly[0][0]);
 
-	poly_sub(kyber->v, msg, Q, msg);
+	poly_sub(kyber->v, msg, msg);
 	poly_compress(msg, msg);
 }

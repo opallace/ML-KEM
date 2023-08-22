@@ -3,15 +3,15 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "aux.h"
 #include "poly.h"
 #include "polyvec.h"
 #include "kyber.h"
 
 void poly_gen_msg(int n, Poly *result){
 	srand(time(NULL));
-
 	result->coeff = calloc(n, sizeof(int));
-	result->size = n;
+	result->size  = n;
 
 	for (int i = 0; i < n-1; i++){
 		result->coeff[i] = rand() % 2;
@@ -59,7 +59,6 @@ int main(){
 
 	printf("MSG: ");
 	poly_println(dec);
-	printf("\n");
 
 	return 0;
 }

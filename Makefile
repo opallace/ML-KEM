@@ -16,4 +16,4 @@ ntru.o: kyber.c kyber.h
 	gcc -c kyber.c
 
 clean:
-	rm -rf *.o *~ main
+	rm -rf *.o
