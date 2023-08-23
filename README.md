@@ -74,7 +74,7 @@ MENSAGEM DECIFRADA: [1,0,0,1,0,1,0,0,1,1,0,1,0,0,1,1,0,0,0,1,1,0,1,0,1,1,1,0,1,0
 | `kyber_encrypt()`        |  2.801s  |  5.367s  |  8.923s   |
 | `kyber_decrypt()`        |  0.914s  |  1.326s  |  1.773s   |
 
-Os dados deste benchmark foram obtidos utilizando um Intel(R) Core(TM) i7-13700K
+Os dados deste benchmark foram obtidos utilizando um Intel(R) Core(TM) i7-13700K.
 
 > > [!WARNING]
 > Biblioteca destinada apenas para fins de estudo.
