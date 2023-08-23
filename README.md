@@ -1,5 +1,6 @@
 # KYBER PKE
-:warning: **Biblioteca destinada apenas para fins de estudo.** :warning:
+> [!WARNING]
+> Biblioteca destinada apenas para fins de estudo.
 
 Implementação simplificada do CRYSTALS-Kyber. Kyber é um sistema criptográfico assimétrico pós-quântico baseado na dificuldade de se resolver
 o problema M-LWE sobre a estrutura algébrica de reticulados. Kyber é um dos algoritmos
@@ -75,6 +76,6 @@ MENSAGEM DECIFRADA: [1,0,0,1,0,1,0,0,1,1,0,1,0,0,1,1,0,0,0,1,1,0,1,0,1,1,1,0,1,0
 Os dados do benchmark foram obtidos utilizando um Intel(R) Core(TM) i7-13700K
 
 > [!NOTE]
-> Highlights information that users should take into account, even when skimming.
-[Documentação Kyber](https://pq-crystals.org/kyber/)
+> [Documentação Kyber](https://pq-crystals.org/kyber/)
+
 
