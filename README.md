@@ -28,7 +28,7 @@ make all
 int main(){
        srand(time(NULL));
 	
-	Kyber *kyber  =  kyber_init();
+	Kyber *kyber  = kyber_init();
 	Poly *msg     = poly_init();
 	Poly *dec     = poly_init();
        
