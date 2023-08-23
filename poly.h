@@ -8,8 +8,6 @@ typedef struct{
 
 Poly* poly_init();
 
-void poly_print(Poly *a);
-void poly_println(Poly *a);
 void poly_copy(Poly *a, Poly *b);
 void poly_free(Poly *a);
 void poly_fill(Poly *a, int new_size, int value);

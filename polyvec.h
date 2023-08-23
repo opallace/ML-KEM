@@ -8,8 +8,9 @@ typedef struct{
 	int size_j;
 } Polyvec;
 
-Polyvec* polyvec_init(int lines, int colums);
-void polyvec_print(Polyvec *polyvec);
+Polyvec* polyvec_init();
+void polyvec_poly_init(Polyvec *polyvec, int lines, int colums);
+void polyvec_copy(Polyvec *a, Polyvec *b);
 void polyvec_free(Polyvec *polyvec);
 
 void polyvec_transpose(Polyvec *polyvec, Polyvec *transpose);

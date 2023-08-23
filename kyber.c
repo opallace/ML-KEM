@@ -8,23 +8,44 @@
 Kyber* kyber_init(){
 	Kyber *kyber = malloc(sizeof(Kyber));
 
-	kyber->a = polyvec_init(K, K);
-	kyber->s = polyvec_init(K, 1);
-	kyber->e = polyvec_init(K, 1);
-	kyber->t = polyvec_init(K, 1);
+	kyber->a  = polyvec_init();
+	kyber->s  = polyvec_init();
+	kyber->e  = polyvec_init();
+	kyber->t  = polyvec_init();
+	kyber->r  = polyvec_init();
+	kyber->e1 = polyvec_init();
+	kyber->u  = polyvec_init();
 
-	kyber->r  = polyvec_init(K, 1);
-	kyber->e1 = polyvec_init(K, 1);
 	kyber->e2 = poly_init();
-	kyber->u  = polyvec_init(K, 1);
 	kyber->v  = poly_init();
+
+	polyvec_poly_init(kyber->a, K, K);
+	polyvec_poly_init(kyber->s, K, 1);
+	polyvec_poly_init(kyber->e, K, 1);
+	polyvec_poly_init(kyber->t, K, 1);
+	polyvec_poly_init(kyber->r, K, 1);
+	polyvec_poly_init(kyber->e1, K, 1);
+	polyvec_poly_init(kyber->u, K, 1);
 
 	return kyber;
 }
 
-void kyber_keygen(Kyber *kyber){
-	srand(time(NULL));
+void kyber_free(Kyber *kyber){
+	poly_free(kyber->e2);
+	poly_free(kyber->v);
 
+	polyvec_free(kyber->a);
+	polyvec_free(kyber->s);
+	polyvec_free(kyber->e);
+	polyvec_free(kyber->t);
+	polyvec_free(kyber->r);
+	polyvec_free(kyber->e1);
+	polyvec_free(kyber->u);
+
+	free(kyber);
+}
+
+void kyber_keygen(Kyber *kyber){
 	for (int i = 0; i < kyber->a->size_i; i++){
 		for (int j = 0; j < kyber->a->size_j; j++){
 			poly_gen(N, kyber->a->poly[i][j]);
@@ -50,11 +71,13 @@ void kyber_keygen(Kyber *kyber){
 }
 
 void kyber_encrypt(Kyber *kyber, Poly *msg){
-	srand(time(NULL));
+	Polyvec *At  = polyvec_init();
+	Polyvec *tt  = polyvec_init();
+	Polyvec *mul = polyvec_init();
 
-	Polyvec *At  = polyvec_init(K, K);
-	Polyvec *tt  = polyvec_init(1, K);
-	Polyvec *mul = polyvec_init(1, 1);
+	polyvec_poly_init(At, K, K);
+	polyvec_poly_init(tt, 1, K);
+	polyvec_poly_init(mul, 1, 1);
 
 	polyvec_transpose(kyber->a, At);
 	polyvec_transpose(kyber->t, tt);
@@ -84,11 +107,18 @@ void kyber_encrypt(Kyber *kyber, Poly *msg){
 	poly_decompress(msg, msg);
 
 	poly_sum(kyber->v, msg, kyber->v);
+
+	polyvec_free(At);
+	polyvec_free(tt);
+	polyvec_free(mul);
 }
 
 void kyber_decrypt(Kyber *kyber, Poly *msg){
-	Polyvec *st  = polyvec_init(1, K);
-	Polyvec *mul = polyvec_init(1, 1);
+	Polyvec *st  = polyvec_init();
+	Polyvec *mul = polyvec_init();
+
+	polyvec_poly_init(st, 1, K);
+	polyvec_poly_init(mul, 1, 1);
 
 	polyvec_transpose(kyber->s, st);
 	polyvec_mul(st, kyber->u, mul);
@@ -96,4 +126,7 @@ void kyber_decrypt(Kyber *kyber, Poly *msg){
 
 	poly_sub(kyber->v, msg, msg);
 	poly_compress(msg, msg);
+
+	polyvec_free(st);
+	polyvec_free(mul);
 }

@@ -12,15 +12,16 @@ typedef struct{
 	Polyvec *s;
 	Polyvec *e;
 	Polyvec *t;
-
 	Polyvec *r;
 	Polyvec *e1;
-	Poly *e2;
 	Polyvec *u;
+
+	Poly *e2;
 	Poly *v;
 } Kyber;
 
 Kyber* kyber_init();
+void kyber_free(Kyber *kyber);
 void kyber_keygen(Kyber *kyber);
 void kyber_encrypt(Kyber *kyber, Poly *msg);
 void kyber_decrypt(Kyber *kyber, Poly *msg);

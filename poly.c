@@ -14,30 +14,6 @@ Poly* poly_init(){
 	return result;
 }
 
-void poly_print(Poly *a){
-	printf("[");
-	for (int i = 0; i < a->size; ++i){
-		if(i == a->size - 1){
-			printf("%i", a->coeff[i]);
-		}else {
-			printf("%i ", a->coeff[i]);
-		}
-	}
-	printf("]");
-}
-
-void poly_println(Poly *a){
-	printf("[");
-	for (int i = 0; i < a->size; ++i){
-		if(i == a->size - 1){
-			printf("%i", a->coeff[i]);
-		}else {
-			printf("%i,", a->coeff[i]);
-		}
-	}
-	printf("]\n");
-}
-
 void poly_copy(Poly *a, Poly *b){
 
 	a->coeff = malloc(b->size * sizeof(int));
@@ -73,11 +49,11 @@ void poly_gen(int n, Poly *result){
 	result->coeff[n-1] = (rand() % (Q-1)) + 1;
 }
 
-void poly_cbd(Poly *a, int eta, Poly *result){
-	Poly *input_bytes = poly_init();
-	poly_copy(input_bytes, a);
+void poly_cbd(Poly *aa, int eta, Poly *result){
+	Poly *a = poly_init();
+	poly_copy(a, aa);
 
-	int *bits = bytes_to_bits(input_bytes->coeff, input_bytes->size);
+	int *bits = bytes_to_bits(a->coeff, a->size);
 	result->coeff = malloc(N * sizeof(int));
 	result->size  = N;
 
@@ -98,7 +74,7 @@ void poly_cbd(Poly *a, int eta, Poly *result){
 }
 
 void poly_compress(Poly *a, Poly *result){
-	int half_q = (Q / 2) + 0.5;
+	int half_q = (Q / 2.0) + 0.5;
 
     for (int i = 0; i < a->size; i++) {
 		int dist_center = abs(half_q - a->coeff[i]);
@@ -178,9 +154,9 @@ void poly_mul(Poly *aa, Poly *bb, Poly *result){
 	for (int i = 0; i < temp_result->size; i++){
 		for (int j = 0; j < temp_result->size; j++){
 			if(i-j >= 0){
-				temp_result->coeff[i] = mod(temp_result->coeff[i] + (a->coeff[i-j] * b->coeff[j]), Q);
+				temp_result->coeff[i] = mod(temp_result->coeff[i] + mod(a->coeff[i-j] * b->coeff[j], Q), Q);
 			}else {
-				temp_result->coeff[i] = mod(temp_result->coeff[i] + (-a->coeff[N+i-j] * b->coeff[j]), Q);
+				temp_result->coeff[i] = mod(temp_result->coeff[i] - mod(a->coeff[N+i-j] * b->coeff[j], Q), Q);
 			}
 		}
 	}
