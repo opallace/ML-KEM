@@ -1,5 +1,10 @@
 #include <stdlib.h>
 
+/* Converte um vetor de bytes em um vetor de bits.
+ *
+ * input: vetor de bytes e seu tamanho.
+ * output: um vetor de bits.
+ */
 int* bytes_to_bits(int *bytes, int size){
 	int *bits = malloc(sizeof(int) * size * 8);
 
@@ -17,7 +22,11 @@ int* bytes_to_bits(int *bytes, int size){
 	return bits;
 }
 
-
+/* Retorna o maior entre dois elementos.
+ *
+ * input: dois inteiros.
+ * output: um inteiro.
+ */
 int max(int a, int b){
 	if(a >= b){
 		return a;
@@ -27,11 +36,16 @@ int max(int a, int b){
 	}
 }
 
-int mod(int n, int modulus){
-	int remainder = n % modulus;
+/* Realiza a operação de módulo em um inteiro.
+ *
+ * input: inteiro a ser realizado a operação e o módulo.
+ * output: resultado da operação n (mod m).
+ */
+int mod(int n, int m){
+	int remainder = n % m;
 	
 	if(remainder < 0){
-		return remainder + modulus;
+		return remainder + m;
 	
 	}else {
 		return remainder;
