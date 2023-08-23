@@ -5,7 +5,7 @@ Implementação simplificada do CRYSTALS-Kyber. Kyber é um sistema criptográfi
 o problema M-LWE sobre a estrutura algébrica de reticulados. Kyber é um dos algoritmos
 finalistas do programa PQC do NIST e selecionado para padronização. 
 
-A documentação oficial do Kyber pode ser encontrada em [documentação kyber](https://pq-crystals.org/kyber/).
+Para mais detalhes, pode ser consultada a documentação oficial do Kyber em [🔗](https://pq-crystals.org/kyber/).
 
 ### Compilação
 ```
