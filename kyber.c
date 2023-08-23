@@ -5,6 +5,11 @@
 #include "polyvec.h"
 #include "kyber.h"
 
+/* Inicializa o Kyber.
+ *
+ * Input:
+ * Output: Um ponteiro para o tipo Kyber.
+ */
 Kyber* kyber_init(){
 	Kyber *kyber = malloc(sizeof(Kyber));
 
@@ -30,6 +35,11 @@ Kyber* kyber_init(){
 	return kyber;
 }
 
+/* Libera memória alocada pelo kyber.
+ *
+ * Input: Um ponteiro para Kyber.
+ * Output: 
+ */
 void kyber_free(Kyber *kyber){
 	poly_free(kyber->e2);
 	poly_free(kyber->v);
@@ -45,6 +55,11 @@ void kyber_free(Kyber *kyber){
 	free(kyber);
 }
 
+/* Gera as chaves públicas e privadas do kyber.
+ *
+ * Input: Um ponteiro para Kyber
+ * Output: 
+ */
 void kyber_keygen(Kyber *kyber){
 	for (int i = 0; i < kyber->a->size_i; i++){
 		for (int j = 0; j < kyber->a->size_j; j++){
@@ -70,6 +85,12 @@ void kyber_keygen(Kyber *kyber){
 	polyvec_sum(kyber->t, kyber->e, kyber->t);
 }
 
+/* Cifra uma mensagem usando as chaves públicas
+ * do kyber.
+ *
+ * Input: Um ponteiro para Kyber e uma mensagem.
+ * Output: 
+ */
 void kyber_encrypt(Kyber *kyber, Poly *msg){
 	Polyvec *At  = polyvec_init();
 	Polyvec *tt  = polyvec_init();
@@ -113,6 +134,12 @@ void kyber_encrypt(Kyber *kyber, Poly *msg){
 	polyvec_free(mul);
 }
 
+/* Decifra uma mensagem usando as chaves privadas
+ * do kyber.
+ *
+ * Input: Um ponteiro para Kyber e uma mensagem cifrada.
+ * Output: 
+ */
 void kyber_decrypt(Kyber *kyber, Poly *msg){
 	Polyvec *st  = polyvec_init();
 	Polyvec *mul = polyvec_init();

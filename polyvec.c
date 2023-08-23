@@ -5,10 +5,23 @@
 #include "polyvec.h"
 #include "kyber.h"
 
+/* Inicializa um Polyvec.
+ *
+ * Input: 
+ * Output: Ponteiro para um tipo Polyvec.
+ */
 Polyvec* polyvec_init(){
 	return malloc(sizeof(Polyvec));
 }
 
+/* Inicializa os elementos de um Polyvec com base
+ * na ordem da matriz.
+ *
+ * Input: -polyvec: ponteiro para um tipo Polyvec.
+ *        -lines: números de linhas.
+ *        -colums: número de colunas.
+ * Output:
+ */
 void polyvec_poly_init(Polyvec *polyvec, int lines, int colums){
 	polyvec->poly = malloc(sizeof(Poly**) * lines);
 
@@ -24,6 +37,13 @@ void polyvec_poly_init(Polyvec *polyvec, int lines, int colums){
 	polyvec->size_j = colums;
 }
 
+/* Copia uma matriz de polinômios para outra.
+ *
+ * Input: Duas matrizes de polinômios.
+ *        -a destino.
+*         -b origem.
+ * Output:
+ */
 void polyvec_copy(Polyvec *a, Polyvec *b){
 	polyvec_poly_init(a, b->size_i, b->size_j);
 
@@ -34,6 +54,11 @@ void polyvec_copy(Polyvec *a, Polyvec *b){
 	}
 }
 
+/* Libera memória alocada por um tipo Polyvec.
+ *
+ * Input: Uma matriz de polinômios.
+ * Output:
+ */
 void polyvec_free(Polyvec *polyvec){
 	for (int i = 0; i < polyvec->size_i; ++i){
 		for (int j = 0; j < polyvec->size_j; ++j){
@@ -46,6 +71,11 @@ void polyvec_free(Polyvec *polyvec){
 	free(polyvec);
 }
 
+/* Realiza a operação de transposição matricial.
+ *
+ * Input: Uma matriz de polinômios.
+ * Output: Uma matriz de polinômios.
+ */
 void polyvec_transpose(Polyvec *aa, Polyvec *result){
 	Polyvec *a = polyvec_init();
 	polyvec_copy(a, aa);
@@ -59,6 +89,11 @@ void polyvec_transpose(Polyvec *aa, Polyvec *result){
 	polyvec_free(a);
 }
 
+/* Realiza a operação de soma matricial.
+ *
+ * Input: Duas matrizes de polinômios.
+ * Output: Uma matriz de polinômios.
+ */
 void polyvec_sum(Polyvec *aa, Polyvec *bb, Polyvec *result){
 	Polyvec *a = polyvec_init();
 	Polyvec *b = polyvec_init();
@@ -82,7 +117,11 @@ void polyvec_sum(Polyvec *aa, Polyvec *bb, Polyvec *result){
 	polyvec_free(b);
 }
 
-
+/* Realiza a operação de multiplicação matricial.
+ *
+ * Input: Duas matrizes de polinômios.
+ * Output: Uma matriz de polinômios.
+ */
 void polyvec_mul(Polyvec *aa, Polyvec *bb, Polyvec *result){
 	Polyvec *a = polyvec_init();
 	Polyvec *b = polyvec_init();

@@ -66,43 +66,35 @@ void poly_gen_msg(int n, Poly *result){
 int main(){
 	srand(time(NULL));
 	
-	Kyber *kyber  =  kyber_init();
-	Poly *msg     = poly_init();
-	Poly *msgg    = poly_init();
-	Poly *dec     = poly_init();
+	Kyber *kyber   =  kyber_init();
+	Poly *msg      = poly_init();
+	Poly *dec      = poly_init();
 
 	poly_gen_msg(N, msg);
-	poly_copy(msgg, msg);
-
-	printf("MSG: ");
-	poly_println(msgg);
-	printf("\n");
-
-	kyber_keygen(kyber);
-
-	printf("A: ");
-	polyvec_print(kyber->a);
-
-	printf("S: ");
-	polyvec_print(kyber->s);
-
-	printf("T: ");
-	polyvec_print(kyber->t);
 	
-	kyber_encrypt(kyber, msg);
+	clock_t t;
+	int f;
+  	
+	t = clock();
+	for(int i = 0; i < 1000; i++){
+		kyber_keygen(kyber);
+	}
+	t = clock() - t;
+  	printf ("keygen() %f seconds\n",((float)t)/CLOCKS_PER_SEC);
+	
+	t = clock();
+	for(int i = 0; i < 1000; i++){
+		kyber_encrypt(kyber, msg);
+	}
+	t = clock() - t;
+  	printf ("kyber_encrypt() %f seconds\n",((float)t)/CLOCKS_PER_SEC);
 
-	printf("U: ");
-	polyvec_print(kyber->u);
-
-	printf("V: ");
-	poly_println(kyber->v);
-
-	kyber_decrypt(kyber, dec);
-
-	printf("MSG: ");
-	poly_println(dec);
-
-	kyber_free(kyber);
+	t = clock();
+	for(int i = 0; i < 1000; i++){
+		kyber_decrypt(kyber, dec);
+	}
+	t = clock() - t;
+  	printf ("kyber_decrypt() %f seconds\n",((float)t)/CLOCKS_PER_SEC);
 
 	return 0;
 }
