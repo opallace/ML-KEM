@@ -69,15 +69,13 @@ void kyber_keygen(Kyber *kyber){
 
 	for (int i = 0; i < kyber->s->size_i; i++){
 		for (int j = 0; j < kyber->s->size_j; j++){
-			poly_gen(N, kyber->s->poly[i][j]);
-			poly_cbd(kyber->s->poly[i][j], N1, kyber->s->poly[i][j]);
+			poly_cbd(N1, kyber->s->poly[i][j]);
 		}
 	}
 
 	for (int i = 0; i < kyber->e->size_i; i++){
 		for (int j = 0; j < kyber->e->size_j; j++){
-			poly_gen(N, kyber->e->poly[i][j]);
-			poly_cbd(kyber->e->poly[i][j], N1, kyber->e->poly[i][j]);
+			poly_cbd(N1, kyber->e->poly[i][j]);
 		}
 	}
 
@@ -105,20 +103,17 @@ void kyber_encrypt(Kyber *kyber, Poly *msg){
 
 	for (int i = 0; i < kyber->r->size_i; i++){
 		for (int j = 0; j < kyber->r->size_j; j++){
-			poly_gen(N, kyber->r->poly[i][j]);
-			poly_cbd(kyber->r->poly[i][j], N1, kyber->r->poly[i][j]);
+			poly_cbd(N1, kyber->r->poly[i][j]);
 		}
 	}
 
 	for (int i = 0; i < kyber->e1->size_i; i++){
 		for (int j = 0; j < kyber->e1->size_j; j++){
-			poly_gen(N, kyber->e1->poly[i][j]);
-			poly_cbd(kyber->e1->poly[i][j], N2, kyber->e1->poly[i][j]);
+			poly_cbd(N2, kyber->e1->poly[i][j]);
 		}
 	}
 
-	poly_gen(N, kyber->e2);
-	poly_cbd(kyber->e2, N2, kyber->e2);
+	poly_cbd(N2, kyber->e2);
 
 	polyvec_mul(At, kyber->r, kyber->u);
 	polyvec_sum(kyber->u, kyber->e1, kyber->u);

@@ -25,6 +25,14 @@ Polyvec* polyvec_init();
  */
 void polyvec_poly_init(Polyvec *polyvec, int lines, int colums);
 
+/* Printa uma matriz de polinômios.
+ *
+ * input: uma matriz de polinômios.
+ * output:
+ * 
+ */
+void polyvec_println(Polyvec *polyvec);
+
 /* Copia uma matriz de polinômios para outra.
  *
  * Input: Duas matrizes de polinômios.

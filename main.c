@@ -7,49 +7,6 @@
 #include "polyvec.h"
 #include "kyber.h"
 
-void poly_print(Poly *a){
-	printf("[");
-	for (int i = 0; i < a->size; ++i){
-		if(i == a->size - 1){
-			printf("%i", a->coeff[i]);
-		}else {
-			printf("%i ", a->coeff[i]);
-		}
-	}
-	printf("]");
-}
-
-void poly_println(Poly *a){
-	printf("[");
-	for (int i = 0; i < a->size; ++i){
-		if(i == a->size - 1){
-			printf("%i", a->coeff[i]);
-		}else {
-			printf("%i,", a->coeff[i]);
-		}
-	}
-	printf("]\n\n");
-}
-
-
-void polyvec_print(Polyvec *polyvec){
-	printf("[");
-	for (int i = 0; i < polyvec->size_i; ++i){
-		printf("[");
-		for (int j = 0; j < polyvec->size_j; ++j){
-			poly_print(polyvec->poly[i][j]);
-			if(j < polyvec->size_j - 1){
-				printf(",");
-			}
-		}
-		printf("]");
-		if(i < polyvec->size_i - 1){
-			printf(",");
-		}
-	}
-	printf("]\n\n");
-}
-
 void poly_gen_msg(int n, Poly *result){
 	srand(time(NULL));
 	
@@ -64,37 +21,45 @@ void poly_gen_msg(int n, Poly *result){
 }
 
 int main(){
-	srand(time(NULL));
+    srand(time(NULL));
 	
-	Kyber *kyber   =  kyber_init();
-	Poly *msg      = poly_init();
-	Poly *dec      = poly_init();
+    Kyber *kyber         = kyber_init();
+    Poly  *msg           = poly_init();
+    Poly  *msg_original  = poly_init();
+    Poly  *msg_decifrada = poly_init();
 
-	poly_gen_msg(N, msg);
-	
-	clock_t t;
-	int f;
-  	
-	t = clock();
-	for(int i = 0; i < 1000; i++){
-		kyber_keygen(kyber);
-	}
-	t = clock() - t;
-  	printf ("keygen() %f seconds\n",((float)t)/CLOCKS_PER_SEC);
-	
-	t = clock();
-	for(int i = 0; i < 1000; i++){
-		kyber_encrypt(kyber, msg);
-	}
-	t = clock() - t;
-  	printf ("kyber_encrypt() %f seconds\n",((float)t)/CLOCKS_PER_SEC);
+    poly_gen_msg(N, msg);
+    poly_copy(msg_original, msg);
 
-	t = clock();
-	for(int i = 0; i < 1000; i++){
-		kyber_decrypt(kyber, dec);
-	}
-	t = clock() - t;
-  	printf ("kyber_decrypt() %f seconds\n",((float)t)/CLOCKS_PER_SEC);
+    kyber_keygen(kyber);
+    kyber_encrypt(kyber, msg);
+    kyber_decrypt(kyber, msg_decifrada);
 
-	return 0;
+    printf("MSG ORIGINAL: ");
+    poly_println(msg_original);
+    
+    printf("A: ");
+    polyvec_println(kyber->a);
+
+    printf("S: ");
+    polyvec_println(kyber->s);
+
+    printf("T: ");
+    polyvec_println(kyber->t);
+
+    printf("U: ");
+    polyvec_println(kyber->u);
+
+    printf("V: ");
+    poly_println(kyber->v);
+
+    printf("MSG DECIFRADA: ");
+    poly_println(msg_decifrada);
+
+    kyber_free(kyber);
+    poly_free(msg);
+    poly_free(msg_original);
+    poly_free(msg_decifrada);
+
+    return 0;
 }

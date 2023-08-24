@@ -37,6 +37,30 @@ void polyvec_poly_init(Polyvec *polyvec, int lines, int colums){
 	polyvec->size_j = colums;
 }
 
+/* Printa uma matriz de polinômios.
+ *
+ * input: uma matriz de polinômios.
+ * output:
+ * 
+ */
+void polyvec_println(Polyvec *polyvec){
+	printf("[");
+	for (int i = 0; i < polyvec->size_i; ++i){
+		printf("[");
+		for (int j = 0; j < polyvec->size_j; ++j){
+			poly_print(polyvec->poly[i][j]);
+			if(j < polyvec->size_j - 1){
+				printf(",");
+			}
+		}
+		printf("]");
+		if(i < polyvec->size_i - 1){
+			printf(",");
+		}
+	}
+	printf("]\n\n");
+}
+
 /* Copia uma matriz de polinômios para outra.
  *
  * Input: Duas matrizes de polinômios.

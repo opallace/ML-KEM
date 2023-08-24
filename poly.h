@@ -13,6 +13,20 @@ typedef struct{
  */
 Poly* poly_init();
 
+/* Printa um polinômio sem quebra de linha.
+ *
+ * input: Um polinômio.
+ * output:
+ */
+void poly_print(Poly *a);
+
+/* Printa um polinômio com quebra de linha.
+ *
+ * input: Um polinômio.
+ * output:
+ */
+void poly_println(Poly *a);
+
 /* Copia um polinômio para outra.
  *
  * Input: Dois polinômios.
@@ -47,17 +61,15 @@ void poly_fill(Poly *a, int new_size, int value);
  */
 void poly_gen(int n, Poly *result);
 
-/* A partir de um polinômio com coeficientes aleatórios em q,
- * retorna um polinômio com coeficientes pertencentes a uma 
+/* Gera um polinômio com coeficientes pertencentes a uma 
  * distribuição de probabilidade binomial centrada em 0. Cada
  * coeficiente do polinômio resultante estará no intervalo [-eta,eta]. 
  *
- * Input: -a: polinômio com coeficientes aleatórios em q.
- *        -eta: parâmetro da distribuição binomial.
+ * Input: -eta: parâmetro da distribuição binomial.
  *        -result: polinômio resultante.
  * Output:
  */
-void poly_cbd(Poly *a, int eta, Poly *result);
+void poly_cbd(int eta, Poly *result);
 
 /* Para cada coeficiente de um polinômio, altera para 1 se
  * este for mais próximo de q/2 do que de 0, e altera para 0

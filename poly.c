@@ -19,6 +19,40 @@ Poly* poly_init(){
 	return result;
 }
 
+/* Printa um polinômio sem quebra de linha.
+ *
+ * input: Um polinômio.
+ * output:
+ */
+void poly_print(Poly *a){
+	printf("[");
+	for (int i = 0; i < a->size; ++i){
+		if(i == a->size - 1){
+			printf("%i", a->coeff[i]);
+		}else {
+			printf("%i ", a->coeff[i]);
+		}
+	}
+	printf("]");
+}
+
+/* Printa um polinômio com quebra de linha.
+ *
+ * input: Um polinômio.
+ * output:
+ */
+void poly_println(Poly *a){
+	printf("[");
+	for (int i = 0; i < a->size; ++i){
+		if(i == a->size - 1){
+			printf("%i", a->coeff[i]);
+		}else {
+			printf("%i,", a->coeff[i]);
+		}
+	}
+	printf("]\n\n");
+}
+
 /* Copia um polinômio para outra.
  *
  * Input: Dois polinômios.
@@ -79,36 +113,23 @@ void poly_gen(int n, Poly *result){
 	result->coeff[n-1] = (rand() % (Q-1)) + 1;
 }
 
-/* A partir de um polinômio com coeficientes aleatórios em q,
- * retorna um polinômio com coeficientes pertencentes a uma 
+/* Gera um polinômio com coeficientes pertencentes a uma 
  * distribuição de probabilidade binomial centrada em 0. Cada
  * coeficiente do polinômio resultante estará no intervalo [-eta,eta]. 
  *
- * Input: -a: polinômio com coeficientes aleatórios em q.
- *        -eta: parâmetro da distribuição binomial.
+ * Input: -eta: parâmetro da distribuição binomial.
  *        -result: polinômio resultante.
  * Output:
  */
-void poly_cbd(Poly *aa, int eta, Poly *result){
-	Poly *a = poly_init();
-	poly_copy(a, aa);
-
-	int *bits = bytes_to_bits(a->coeff, a->size);
+void poly_cbd(int eta, Poly *result){
 	result->coeff = malloc(N * sizeof(int));
 	result->size  = N;
 
 	for (int i = 0; i < N; i++){
-		// int sum_a = 0;
-		// int sum_b = 0;
+		int a = random() % (eta + 1);
+		int b = random() % (eta + 1);
 
-		// for (int j = 0; j < eta; j++){
-		// 	sum_a += bits[(2 * i * eta) + j];
-		// 	sum_b += bits[(2 * i * eta) + eta + j];
-		// }
-
-		// result->coeff[i] = sum_a - sum_b;
-
-		result->coeff[i] = random() % (eta + 1) - random() % (eta + 1);
+		result->coeff[i] =  a - b;
 	}
 }
 

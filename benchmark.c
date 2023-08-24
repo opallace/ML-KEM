@@ -21,9 +21,9 @@ void poly_gen_msg(int n, Poly *result){
 int main(){
 	srand(time(NULL));
 	
-	Kyber *kyber =  kyber_init();
-	Poly *msg    = poly_init();
-	Poly *dec    = poly_init();
+	Kyber *kyber        =  kyber_init();
+	Poly *msg           = poly_init();
+	Poly *msg_decifrada = poly_init();
 
 	poly_gen_msg(N, msg);
 	
@@ -46,10 +46,14 @@ int main(){
 
 	t = clock();
 	for(int i = 0; i < 1000; i++){
-		kyber_decrypt(kyber, dec);
+		kyber_decrypt(kyber, msg_decifrada);
 	}
 	t = clock() - t;
   	printf ("kyber_decrypt() %f segundos em 1000 execuções.\n",((float)t)/CLOCKS_PER_SEC);
+
+	kyber_free(kyber);
+    poly_free(msg);
+    poly_free(msg_decifrada);
 
 	return 0;
 }
