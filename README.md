@@ -13,6 +13,16 @@ make all
 ./main
 ```
 
+### Teste
+```
+make test
+./test
+
+### Benchmark
+```
+make benchmark
+./benchmark
+
 ### Exemplo de código
 
 ```c
