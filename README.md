@@ -17,14 +17,14 @@ make all
 ```
 make test
 ./test
-
+```
 ### Benchmark
 ```
 make benchmark
 ./benchmark
+```
 
 ### Exemplo de código
-
 ```c
 #include <stdio.h>
 #include <stdlib.h>
