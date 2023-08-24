@@ -80,8 +80,9 @@ void poly_gen(int n, Poly *result){
 }
 
 /* A partir de um polinômio com coeficientes aleatórios em q,
- * retorna um polonômio com coeficientes pertencentes a uma 
- * distribuição de probabilidade binomial centrada em 0.
+ * retorna um polinômio com coeficientes pertencentes a uma 
+ * distribuição de probabilidade binomial centrada em 0. Cada
+ * coeficiente do polinômio resultante estará no intervalo [-eta,eta]. 
  *
  * Input: -a: polinômio com coeficientes aleatórios em q.
  *        -eta: parâmetro da distribuição binomial.
