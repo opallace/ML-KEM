@@ -18,11 +18,6 @@ make all
 make test
 ./test
 ```
-### Benchmark
-```
-make benchmark
-./benchmark
-```
 
 ### Exemplo de código
 ```c
@@ -77,6 +72,10 @@ MENSAGEM DECIFRADA: [1,0,0,1,0,1,0,0,1,1,0,1,0,0,1,1,0,0,0,1,1,0,1,0,1,1,1,0,1,0
 ```
 
 ### Benchmark
+```
+make benchmark
+./benchmark
+```
 
 |  1000 Execuções          | Kyber512 | Kyber768 | Kyber1024 |
 |--------------------------|----------|----------|-----------|
