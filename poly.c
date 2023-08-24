@@ -98,18 +98,17 @@ void poly_cbd(Poly *aa, int eta, Poly *result){
 	result->size  = N;
 
 	for (int i = 0; i < N; i++){
-		int sum_a = 0;
-		int sum_b = 0;
+		// int sum_a = 0;
+		// int sum_b = 0;
 
-		for (int j = 0; j < eta; j++){
-			sum_a += bits[(2 * i * eta) + j];
-		}
+		// for (int j = 0; j < eta; j++){
+		// 	sum_a += bits[(2 * i * eta) + j];
+		// 	sum_b += bits[(2 * i * eta) + eta + j];
+		// }
 
-		for (int j = 0; j < eta; j++){
-			sum_b += bits[(2 * i * eta) + eta + j];
-		}
+		// result->coeff[i] = sum_a - sum_b;
 
-		result->coeff[i] = sum_a - sum_b;
+		result->coeff[i] = random() % (eta + 1) - random() % (eta + 1);
 	}
 }
 
