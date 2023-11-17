@@ -53,7 +53,7 @@ void poly_free(Poly *a);
  */
 void poly_fill(Poly *a, int new_size, int value);
 
-/* Gera um polinômio em Z_q[x]/<x^n + 1>.
+/* Gera um polinômio pseudoaleatório em Z_q[x]/<x^n + 1>.
  *
  * Input: -n: grau do polinômio.
  *        -result: polinômio gerado.

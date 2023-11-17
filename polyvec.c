@@ -3,7 +3,7 @@
 
 #include "poly.h"
 #include "polyvec.h"
-#include "kyber.h"
+#include "k_pke.h"
 
 /* Inicializa um Polyvec.
  *
@@ -86,7 +86,7 @@ void polyvec_copy(Polyvec *a, Polyvec *b){
 void polyvec_free(Polyvec *polyvec){
 	for (int i = 0; i < polyvec->size_i; ++i){
 		for (int j = 0; j < polyvec->size_j; ++j){
-			 poly_free(polyvec->poly[i][j]);
+			poly_free(polyvec->poly[i][j]);
 		}
 
 		free(polyvec->poly[i]);

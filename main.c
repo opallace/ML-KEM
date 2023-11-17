@@ -1,65 +1,45 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 
 #include "aux.h"
 #include "poly.h"
 #include "polyvec.h"
-#include "kyber.h"
-
-void poly_gen_msg(int n, Poly *result){
-	srand(time(NULL));
-	
-	result->coeff = calloc(n, sizeof(int));
-	result->size  = n;
-
-	for (int i = 0; i < n-1; i++){
-		result->coeff[i] = rand() % 2;
-	}
-
-	result->coeff[n-1] = 1;
-}
+#include "k_pke.h"
+#include "ml_kem.h"
 
 int main(){
     srand(time(NULL));
 	
-    Kyber *kyber         = kyber_init();
-    Poly  *msg           = poly_init();
-    Poly  *msg_original  = poly_init();
-    Poly  *msg_decifrada = poly_init();
+    ML_KEM *ml_kem = ml_kem_init();
 
-    poly_gen_msg(N, msg);
-    poly_copy(msg_original, msg);
+    ml_kem_keygen(ml_kem);
 
-    kyber_keygen(kyber);
-    kyber_encrypt(kyber, msg);
-    kyber_decrypt(kyber, msg_decifrada);
+    printf("EK_PKE_T: ");
+    polyvec_println(ml_kem->ek_pke_t);
 
-    printf("MSG ORIGINAL: ");
-    poly_println(msg_original);
-    
-    printf("A: ");
-    polyvec_println(kyber->a);
+    printf("EK_PKE_A: ");
+    polyvec_println(ml_kem->ek_pke_a);
 
-    printf("S: ");
-    polyvec_println(kyber->s);
+    printf("DK_PKE_S: ");
+    polyvec_println(ml_kem->dk_pke_s);
 
-    printf("T: ");
-    polyvec_println(kyber->t);
+    ml_kem_encapsulate(ml_kem);
 
-    printf("U: ");
-    polyvec_println(kyber->u);
+    printf("K: ");
+    poly_compress(ml_kem->k, ml_kem->k);
+    poly_println(ml_kem->k);
 
-    printf("V: ");
-    poly_println(kyber->v);
+    printf("C_U: ");
+    polyvec_println(ml_kem->c_u);
 
-    printf("MSG DECIFRADA: ");
-    poly_println(msg_decifrada);
+    printf("C_V: ");
+    poly_println(ml_kem->c_v);
 
-    kyber_free(kyber);
-    poly_free(msg);
-    poly_free(msg_original);
-    poly_free(msg_decifrada);
+    ml_kem_decapsulate(ml_kem, ml_kem->k);
+
+    printf("K: ");
+    poly_println(ml_kem->k);
 
     return 0;
 }

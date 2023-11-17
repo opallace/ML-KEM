@@ -6,7 +6,7 @@
 #include "aux.h"
 #include "poly.h"
 #include "polyvec.h"
-#include "kyber.h"
+#include "k_pke.h"
 
 /* Inicializa um polinômio.
  *
@@ -74,7 +74,10 @@ void poly_copy(Poly *a, Poly *b){
  * Output:
  */
 void poly_free(Poly *a){
-	free(a->coeff);
+	if(a->size != 0){
+		free(a->coeff);
+	}
+	
 	free(a);
 }
 
@@ -96,7 +99,7 @@ void poly_fill(Poly *a, int new_size, int value){
 	a->size = new_size;
 }
 
-/* Gera um polinômio em Z_q[x]/<x^n + 1>.
+/* Gera um polinômio pseudoaleatório em Z_q[x]/<x^n + 1>.
  *
  * Input: -n: grau do polinômio.
  *        -result: polinômio gerado.

@@ -5,7 +5,7 @@
 #include "aux.h"
 #include "poly.h"
 #include "polyvec.h"
-#include "kyber.h"
+#include "k_pke.h"
 
 int poly_cmp(Poly *a, Poly *b){
     if(a->size == b->size){

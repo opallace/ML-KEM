@@ -5,7 +5,7 @@
 #include "aux.h"
 #include "poly.h"
 #include "polyvec.h"
-#include "kyber.h"
+#include "k_pke.h"
 
 void poly_gen_msg(int n, Poly *result){
 	result->coeff = calloc(n, sizeof(int));
