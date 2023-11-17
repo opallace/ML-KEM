@@ -143,16 +143,13 @@ int main(){
 
     ml_kem_decapsulate(ml_kem, ml_kem->k);
 
-    printf("K: ");
-    poly_println(ml_kem->k);
-
     return 0;
 }
 ```
 Este código retorna a seguinte saída, onde:
-- 🔓 Chave de encapsulamento: EK_PKE_A e EK_PKE_T
+- 🔓 Chave de encapsulamento: EK_PKE_A, EK_PKE_T
 - 🔑 Chave de desencapsulamento: DK_PKE_S
-- 🔐 Chave compartilhada cifrada: C_U e C_V
+- 🔐 Chave compartilhada cifrada: C_U, C_V
 - :busts_in_silhouette: Chave compartilhada: K
 
 ```
