@@ -177,11 +177,11 @@ make benchmark
 ./benchmark
 ```
 
-|  1000 Execuções          | Kyber512 | Kyber768 | Kyber1024 |
-|--------------------------|----------|----------|-----------|
-| `kyber_keygen()`         |  1.901s  |  4.067s  |  7.178s   |
-| `kyber_encrypt()`        |  2.801s  |  5.367s  |  8.923s   |
-| `kyber_decrypt()`        |  0.914s  |  1.326s  |  1.773s   |
+|  1000 Execuções          | ML-KEM-512 | ML-KEM-768 | ML-KEM-1024 |
+|--------------------------|------------|------------|-------------|
+| `k_pke_keygen()`         |   1.901s   |   4.067s   |   7.178s    |
+| `k_pke_encrypt()`        |   2.801s   |   5.367s   |   8.923s    |
+| `k_pke_decrypt()`        |   0.914s   |   1.326s   |   1.773s    |
 
 Os dados deste benchmark foram obtidos utilizando um Intel(R) Core(TM) i7-13700K.
 
