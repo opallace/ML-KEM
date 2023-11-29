@@ -185,7 +185,7 @@ make benchmark
 
 Os dados deste benchmark foram obtidos utilizando um Intel(R) Core(TM) i7-13700K.
 
-> > [!WARNING]
+> [!WARNING]
 > Biblioteca destinada apenas para fins de estudo.
 
 
