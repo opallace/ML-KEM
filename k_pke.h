@@ -1,11 +1,5 @@
-#ifndef KYBER_H_INCLUDED
-#define KYBER_H_INCLUDED
-
-#define N 256
-#define K 4
-#define Q 3329
-#define N1 2
-#define N2 2
+#ifndef K_PKE_H_INCLUDED
+#define K_PKE_H_INCLUDED
 
 typedef struct{
 	Polyvec *a;
@@ -18,43 +12,43 @@ typedef struct{
 
 	Poly *e2;
 	Poly *v;
-} Kyber;
+} K_PKE;
 
-/* Inicializa o Kyber.
+/* Inicializa o K_PKE.
  *
  * Input:
- * Output: Um ponteiro para o tipo Kyber.
+ * Output: Um ponteiro para o tipo K_PKE.
  */
-Kyber* kyber_init();
+K_PKE* k_pke_init();
 
-/* Libera memória alocada pelo kyber.
+/* Libera memória alocada pelo k_pke.
  *
- * Input: Um ponteiro para Kyber.
+ * Input: Um ponteiro para K_PKE.
  * Output: 
  */
-void kyber_free(Kyber *kyber);
+void k_pke_free(K_PKE *k_pke);
 
-/* Gera as chaves públicas e privadas do kyber.
+/* Gera as chaves públicas e privadas do k_pke.
  *
- * Input: Um ponteiro para Kyber
+ * Input: Um ponteiro para K_PKE
  * Output: 
  */
-void kyber_keygen(Kyber *kyber);
+void k_pke_keygen(K_PKE *k_pke);
 
 /* Cifra uma mensagem usando as chaves públicas
- * do kyber.
+ * do k_pke.
  *
- * Input: Um ponteiro para Kyber e uma mensagem.
+ * Input: Um ponteiro para K_PKE e uma mensagem.
  * Output: 
  */
-void kyber_encrypt(Kyber *kyber, Poly *msg);
+void k_pke_encrypt(K_PKE *k_pke, Poly *msg);
 
 /* Decifra uma mensagem usando as chaves privadas
- * do kyber.
+ * do k_pke.
  *
- * Input: Um ponteiro para Kyber e uma mensagem cifrada.
+ * Input: Um ponteiro para K_PKE e uma mensagem cifrada.
  * Output: 
  */
-void kyber_decrypt(Kyber *kyber, Poly *msg);
+void k_pke_decrypt(K_PKE *k_pke, Poly *msg);
 
 #endif

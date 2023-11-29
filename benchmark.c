@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include "aux.h"
+#include "params.h"
 #include "poly.h"
 #include "polyvec.h"
 #include "k_pke.h"
@@ -21,7 +22,7 @@ void poly_gen_msg(int n, Poly *result){
 int main(){
 	srand(time(NULL));
 	
-	Kyber *kyber        =  kyber_init();
+	K_PKE *k_pke        =  k_pke_init();
 	Poly *msg           = poly_init();
 	Poly *msg_decifrada = poly_init();
 
@@ -32,26 +33,26 @@ int main(){
   	
 	t = clock();
 	for(int i = 0; i < 1000; i++){
-		kyber_keygen(kyber);
+		k_pke_keygen(k_pke);
 	}
 	t = clock() - t;
-  	printf ("keygen() %f segundos em 1000 execuções.\n",((float)t)/CLOCKS_PER_SEC);
+  	printf ("k_pke_keygen() %f segundos em 1000 execuções.\n",((float)t)/CLOCKS_PER_SEC);
 	
 	t = clock();
 	for(int i = 0; i < 1000; i++){
-		kyber_encrypt(kyber, msg);
+		k_pke_encrypt(k_pke, msg);
 	}
 	t = clock() - t;
-  	printf ("kyber_encrypt() %f segundos em 1000 execuções.\n",((float)t)/CLOCKS_PER_SEC);
+  	printf ("k_pke_encrypt() %f segundos em 1000 execuções.\n",((float)t)/CLOCKS_PER_SEC);
 
 	t = clock();
 	for(int i = 0; i < 1000; i++){
-		kyber_decrypt(kyber, msg_decifrada);
+		k_pke_decrypt(k_pke, msg_decifrada);
 	}
 	t = clock() - t;
-  	printf ("kyber_decrypt() %f segundos em 1000 execuções.\n",((float)t)/CLOCKS_PER_SEC);
+  	printf ("k_pke_decrypt() %f segundos em 1000 execuções.\n",((float)t)/CLOCKS_PER_SEC);
 
-	kyber_free(kyber);
+	k_pke_free(k_pke);
     poly_free(msg);
     poly_free(msg_decifrada);
 

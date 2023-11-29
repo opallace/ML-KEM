@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include "aux.h"
+#include "params.h"
 #include "poly.h"
 #include "polyvec.h"
 #include "k_pke.h"
@@ -39,7 +40,7 @@ int main(){
 	
     for (int i = 0; i < 1000; i++){
 
-        Kyber *kyber         = kyber_init();
+        K_PKE *k_pke         = k_pke_init();
         Poly  *msg           = poly_init();
         Poly  *msg_original  = poly_init();
         Poly  *msg_decifrada = poly_init();
@@ -47,15 +48,15 @@ int main(){
         poly_gen_msg(N, msg);
         poly_copy(msg_original, msg);
 
-        kyber_keygen(kyber);
-        kyber_encrypt(kyber, msg);
-        kyber_decrypt(kyber, msg_decifrada);
+        k_pke_keygen(k_pke);
+        k_pke_encrypt(k_pke, msg);
+        k_pke_decrypt(k_pke, msg_decifrada);
 
         if(poly_cmp(msg_original, msg_decifrada)){
             count++;
         }
 
-        kyber_free(kyber);
+        k_pke_free(k_pke);
         poly_free(msg);
         poly_free(msg_original);
         poly_free(msg_decifrada);

@@ -13,8 +13,6 @@ typedef struct{
     Poly *k;
 } ML_KEM;
 
-void H(char *in, Poly *out);
-
 ML_KEM* ml_kem_init();
 void ml_kem_free(ML_KEM *ml_kem);
 void ml_kem_keygen(ML_KEM *ml_kem);

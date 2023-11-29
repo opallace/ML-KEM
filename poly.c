@@ -4,9 +4,9 @@
 #include <math.h>
 
 #include "aux.h"
+#include "params.h"
 #include "poly.h"
 #include "polyvec.h"
-#include "k_pke.h"
 
 /* Inicializa um polinômio.
  *

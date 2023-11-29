@@ -1,95 +1,96 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "params.h"
 #include "poly.h"
 #include "polyvec.h"
 #include "k_pke.h"
 
-/* Inicializa o Kyber.
+/* Inicializa o K_PKE.
  *
  * Input:
- * Output: Um ponteiro para o tipo Kyber.
+ * Output: Um ponteiro para o tipo K_PKE.
  */
-Kyber* kyber_init(){
-	Kyber *kyber = malloc(sizeof(Kyber));
+K_PKE* k_pke_init(){
+	K_PKE *k_pke = malloc(sizeof(K_PKE));
 
-	kyber->a  = polyvec_init();
-	kyber->s  = polyvec_init();
-	kyber->e  = polyvec_init();
-	kyber->t  = polyvec_init();
-	kyber->r  = polyvec_init();
-	kyber->e1 = polyvec_init();
-	kyber->u  = polyvec_init();
+	k_pke->a  = polyvec_init();
+	k_pke->s  = polyvec_init();
+	k_pke->e  = polyvec_init();
+	k_pke->t  = polyvec_init();
+	k_pke->r  = polyvec_init();
+	k_pke->e1 = polyvec_init();
+	k_pke->u  = polyvec_init();
 
-	kyber->e2 = poly_init();
-	kyber->v  = poly_init();
+	k_pke->e2 = poly_init();
+	k_pke->v  = poly_init();
 
-	polyvec_poly_init(kyber->a, K, K);
-	polyvec_poly_init(kyber->s, K, 1);
-	polyvec_poly_init(kyber->e, K, 1);
-	polyvec_poly_init(kyber->t, K, 1);
-	polyvec_poly_init(kyber->r, K, 1);
-	polyvec_poly_init(kyber->e1, K, 1);
-	polyvec_poly_init(kyber->u, K, 1);
+	polyvec_poly_init(k_pke->a, K, K);
+	polyvec_poly_init(k_pke->s, K, 1);
+	polyvec_poly_init(k_pke->e, K, 1);
+	polyvec_poly_init(k_pke->t, K, 1);
+	polyvec_poly_init(k_pke->r, K, 1);
+	polyvec_poly_init(k_pke->e1, K, 1);
+	polyvec_poly_init(k_pke->u, K, 1);
 
-	return kyber;
+	return k_pke;
 }
 
-/* Libera memória alocada pelo kyber.
+/* Libera memória alocada pelo k_pke.
  *
- * Input: Um ponteiro para Kyber.
+ * Input: Um ponteiro para K_PKE.
  * Output: 
  */
-void kyber_free(Kyber *kyber){
-	poly_free(kyber->e2);
-	poly_free(kyber->v);
+void k_pke_free(K_PKE *k_pke){
+	poly_free(k_pke->e2);
+	poly_free(k_pke->v);
 
-	polyvec_free(kyber->a);
-	polyvec_free(kyber->s);
-	polyvec_free(kyber->e);
-	polyvec_free(kyber->t);
-	polyvec_free(kyber->r);
-	polyvec_free(kyber->e1);
-	polyvec_free(kyber->u);
+	polyvec_free(k_pke->a);
+	polyvec_free(k_pke->s);
+	polyvec_free(k_pke->e);
+	polyvec_free(k_pke->t);
+	polyvec_free(k_pke->r);
+	polyvec_free(k_pke->e1);
+	polyvec_free(k_pke->u);
 
-	free(kyber);
+	free(k_pke);
 }
 
-/* Gera as chaves públicas e privadas do kyber.
+/* Gera as chaves públicas e privadas do k_pke.
  *
- * Input: Um ponteiro para Kyber
+ * Input: Um ponteiro para K_PKE
  * Output: 
  */
-void kyber_keygen(Kyber *kyber){
-	for (int i = 0; i < kyber->a->size_i; i++){
-		for (int j = 0; j < kyber->a->size_j; j++){
-			poly_gen(N, kyber->a->poly[i][j]);
+void k_pke_keygen(K_PKE *k_pke){
+	for (int i = 0; i < k_pke->a->size_i; i++){
+		for (int j = 0; j < k_pke->a->size_j; j++){
+			poly_gen(N, k_pke->a->poly[i][j]);
 		}
 	}
 
-	for (int i = 0; i < kyber->s->size_i; i++){
-		for (int j = 0; j < kyber->s->size_j; j++){
-			poly_cbd(N1, kyber->s->poly[i][j]);
+	for (int i = 0; i < k_pke->s->size_i; i++){
+		for (int j = 0; j < k_pke->s->size_j; j++){
+			poly_cbd(N1, k_pke->s->poly[i][j]);
 		}
 	}
 
-	for (int i = 0; i < kyber->e->size_i; i++){
-		for (int j = 0; j < kyber->e->size_j; j++){
-			poly_cbd(N1, kyber->e->poly[i][j]);
+	for (int i = 0; i < k_pke->e->size_i; i++){
+		for (int j = 0; j < k_pke->e->size_j; j++){
+			poly_cbd(N1, k_pke->e->poly[i][j]);
 		}
 	}
 
-	polyvec_mul(kyber->a, kyber->s, kyber->t);
-	polyvec_sum(kyber->t, kyber->e, kyber->t);
+	polyvec_mul(k_pke->a, k_pke->s, k_pke->t);
+	polyvec_sum(k_pke->t, k_pke->e, k_pke->t);
 }
 
 /* Cifra uma mensagem usando as chaves públicas
- * do kyber.
+ * do k_pke.
  *
- * Input: Um ponteiro para Kyber e uma mensagem.
+ * Input: Um ponteiro para K_PKE e uma mensagem.
  * Output: 
  */
-void kyber_encrypt(Kyber *kyber, Poly *msg){
+void k_pke_encrypt(K_PKE *k_pke, Poly *msg){
 	Polyvec *At  = polyvec_init();
 	Polyvec *tt  = polyvec_init();
 	Polyvec *mul = polyvec_init();
@@ -98,31 +99,31 @@ void kyber_encrypt(Kyber *kyber, Poly *msg){
 	polyvec_poly_init(tt, 1, K);
 	polyvec_poly_init(mul, 1, 1);
 
-	polyvec_transpose(kyber->a, At);
-	polyvec_transpose(kyber->t, tt);
+	polyvec_transpose(k_pke->a, At);
+	polyvec_transpose(k_pke->t, tt);
 
-	for (int i = 0; i < kyber->r->size_i; i++){
-		for (int j = 0; j < kyber->r->size_j; j++){
-			poly_cbd(N1, kyber->r->poly[i][j]);
+	for (int i = 0; i < k_pke->r->size_i; i++){
+		for (int j = 0; j < k_pke->r->size_j; j++){
+			poly_cbd(N1, k_pke->r->poly[i][j]);
 		}
 	}
 
-	for (int i = 0; i < kyber->e1->size_i; i++){
-		for (int j = 0; j < kyber->e1->size_j; j++){
-			poly_cbd(N2, kyber->e1->poly[i][j]);
+	for (int i = 0; i < k_pke->e1->size_i; i++){
+		for (int j = 0; j < k_pke->e1->size_j; j++){
+			poly_cbd(N2, k_pke->e1->poly[i][j]);
 		}
 	}
 
-	poly_cbd(N2, kyber->e2);
+	poly_cbd(N2, k_pke->e2);
 
-	polyvec_mul(At, kyber->r, kyber->u);
-	polyvec_sum(kyber->u, kyber->e1, kyber->u);
+	polyvec_mul(At, k_pke->r, k_pke->u);
+	polyvec_sum(k_pke->u, k_pke->e1, k_pke->u);
 
-	polyvec_mul(tt, kyber->r, mul);
-	poly_sum(mul->poly[0][0], kyber->e2, kyber->v);
+	polyvec_mul(tt, k_pke->r, mul);
+	poly_sum(mul->poly[0][0], k_pke->e2, k_pke->v);
 	poly_decompress(msg, msg);
 
-	poly_sum(kyber->v, msg, kyber->v);
+	poly_sum(k_pke->v, msg, k_pke->v);
 
 	polyvec_free(At);
 	polyvec_free(tt);
@@ -130,23 +131,23 @@ void kyber_encrypt(Kyber *kyber, Poly *msg){
 }
 
 /* Decifra uma mensagem usando as chaves privadas
- * do kyber.
+ * do k_pke.
  *
- * Input: Um ponteiro para Kyber e uma mensagem cifrada.
+ * Input: Um ponteiro para K_PKE e uma mensagem cifrada.
  * Output: 
  */
-void kyber_decrypt(Kyber *kyber, Poly *msg){
+void k_pke_decrypt(K_PKE *k_pke, Poly *msg){
 	Polyvec *st  = polyvec_init();
 	Polyvec *mul = polyvec_init();
 
 	polyvec_poly_init(st, 1, K);
 	polyvec_poly_init(mul, 1, 1);
 
-	polyvec_transpose(kyber->s, st);
-	polyvec_mul(st, kyber->u, mul);
+	polyvec_transpose(k_pke->s, st);
+	polyvec_mul(st, k_pke->u, mul);
 	poly_copy(msg, mul->poly[0][0]);
 
-	poly_sub(kyber->v, msg, msg);
+	poly_sub(k_pke->v, msg, msg);
 	poly_compress(msg, msg);
 
 	polyvec_free(st);

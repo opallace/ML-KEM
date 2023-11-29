@@ -1,4 +1,4 @@
-all: main
+all: main benchmark test
 
 main: aux.o poly.o polyvec.o k_pke.o ml_kem.o
 	gcc main.c -o main aux.o poly.o polyvec.o k_pke.o ml_kem.o -lm

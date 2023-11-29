@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "params.h"
 #include "poly.h"
 #include "polyvec.h"
 #include "k_pke.h"
@@ -37,21 +38,21 @@ void ml_kem_free(ML_KEM *ml_kem){
 
 void ml_kem_keygen(ML_KEM *ml_kem){
 
-	Kyber *kyber = kyber_init();
+	K_PKE *k_pke = k_pke_init();
 
-	kyber_keygen(kyber);
+	k_pke_keygen(k_pke);
 
-	polyvec_copy(ml_kem->ek_pke_a, kyber->a);
-	polyvec_copy(ml_kem->ek_pke_t, kyber->t);
-	polyvec_copy(ml_kem->dk_pke_s, kyber->s);
+	polyvec_copy(ml_kem->ek_pke_a, k_pke->a);
+	polyvec_copy(ml_kem->ek_pke_t, k_pke->t);
+	polyvec_copy(ml_kem->dk_pke_s, k_pke->s);
 
-	kyber_free(kyber);
+	k_pke_free(k_pke);
 
 }
 
 void ml_kem_encapsulate(ML_KEM *ml_kem){
 
-	Kyber *kyber = kyber_init();
+	K_PKE *k_pke = k_pke_init();
 
 	ml_kem->k->coeff = malloc(sizeof(int) * N);
 	ml_kem->k->size  = N;
@@ -60,29 +61,29 @@ void ml_kem_encapsulate(ML_KEM *ml_kem){
 		ml_kem->k->coeff[i] = rand() % 2;
 	}
 
-	polyvec_copy(kyber->a, ml_kem->ek_pke_a);
-	polyvec_copy(kyber->t, ml_kem->ek_pke_t);
+	polyvec_copy(k_pke->a, ml_kem->ek_pke_a);
+	polyvec_copy(k_pke->t, ml_kem->ek_pke_t);
 
-	kyber_encrypt(kyber, ml_kem->k);
+	k_pke_encrypt(k_pke, ml_kem->k);
 
-	polyvec_copy(ml_kem->c_u, kyber->u);
-	poly_copy(ml_kem->c_v, kyber->v);
+	polyvec_copy(ml_kem->c_u, k_pke->u);
+	poly_copy(ml_kem->c_v, k_pke->v);
 
-	kyber_free(kyber);
+	k_pke_free(k_pke);
 }
 
 void ml_kem_decapsulate(ML_KEM *ml_kem, Poly *k){
-	Kyber *kyber = kyber_init();
+	K_PKE *k_pke = k_pke_init();
 
-	polyvec_copy(kyber->s, ml_kem->dk_pke_s);
-	polyvec_copy(kyber->u, ml_kem->c_u);
-	poly_copy(kyber->v, ml_kem->c_v);
+	polyvec_copy(k_pke->s, ml_kem->dk_pke_s);
+	polyvec_copy(k_pke->u, ml_kem->c_u);
+	poly_copy(k_pke->v, ml_kem->c_v);
 
 	Poly *k_temp = poly_init();
-	kyber_decrypt(kyber, k_temp);
+	k_pke_decrypt(k_pke, k_temp);
 
 	poly_copy(k, k_temp);
 
 	poly_free(k_temp);
-	kyber_free(kyber);
+	k_pke_free(k_pke);
 }
